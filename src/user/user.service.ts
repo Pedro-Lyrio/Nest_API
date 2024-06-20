@@ -63,7 +63,7 @@ export class UserService {
             throw new NotFoundException(`UserId: ${userId} Not found`);
         }
         
-        return;
+        return user;
     }
 
     async findUserByEmail(email:string): Promise<UserEntity> {
