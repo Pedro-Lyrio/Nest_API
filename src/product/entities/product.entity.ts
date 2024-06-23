@@ -5,6 +5,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -12,12 +13,16 @@ import {
 export class ProductEntity {
   @PrimaryGeneratedColumn('rowid')
   id: number;
+
   @Column({ name: 'name', nullable: false })
   name: string;
+
   @Column({ name: 'category_id', nullable: false })
   categoryId: number;
-  @Column({ name: 'price', nullable: false })
+
+  @Column({ name: 'price', type: 'decimal', nullable: false })
   price: number;
+
   @Column({ name: 'image', nullable: false })
   image: string;
   @CreateDateColumn({ name: 'created_at' })
