@@ -5,7 +5,7 @@ import { categoryMock } from '../../category/__mocks__/category.mock';
 import { Repository } from 'typeorm';
 import { ProductEntity } from '../entities/product.entity';
 import { ProductService } from '../product.service';
-import { createProduct } from '../__mocks__/create-product.mock';
+import { createProductMock } from '../__mocks__/create-product.mock';
 import { productMock } from '../__mocks__/product.mock';
 import { returnDeleteMock } from '../__mocks__/return-delete.mock';
 
@@ -64,14 +64,14 @@ describe('ProductService', () => {
   });
 
   it('should return product after insert in DB', async () => {
-    const product = await service.createProduct(createProduct);
+    const product = await service.createProduct(createProductMock);
 
     expect(product).toEqual(productMock);
   });
 
     it('should return product after insert in DB', async () => {
      jest.spyOn(categoryService, 'findCategoryById').mockRejectedValue(new Error());
-      expect(service.createProduct(createProduct)).rejects.toThrowError();
+      expect(service.createProduct(createProductMock)).rejects.toThrowError();
      });
 
 
@@ -91,5 +91,22 @@ describe('ProductService', () => {
         const deleted = await service.deleteProduct(productMock.id);
     
         expect(deleted).toEqual(returnDeleteMock);
+      });
+
+      it('should return produt after update', async () => {
+        const product = await service.updateProduct(
+          createProductMock,
+          productMock.id,
+        );
+    
+        expect(product).toEqual(productMock);
+      });
+    
+      it('should error in update product', async () => {
+        jest.spyOn(productRepository, 'save').mockRejectedValue(new Error());
+    
+        expect(
+          service.updateProduct(createProductMock, productMock.id),
+        ).rejects.toThrowError();
       });
 });
