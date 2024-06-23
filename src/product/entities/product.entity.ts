@@ -9,26 +9,28 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { CartProdutEntity } from '../../cart-product/entities/cart-product.entity';
+
 @Entity({ name: 'product' })
 export class ProductEntity {
   @PrimaryGeneratedColumn('rowid')
   id: number;
-
   @Column({ name: 'name', nullable: false })
   name: string;
-
   @Column({ name: 'category_id', nullable: false })
   categoryId: number;
-
-  @Column({ name: 'price', type: 'decimal', nullable: false })
+  @Column({ name: 'price', nullable: false })
   price: number;
-
   @Column({ name: 'image', nullable: false })
   image: string;
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @OneToMany(() => CartProdutEntity, (cartProduct) => cartProduct.product)
+  cartProduct?: CartProdutEntity[];
+
   @ManyToOne(
     () => CategoryEntity,
     (category: CategoryEntity) => category.products,
