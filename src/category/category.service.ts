@@ -3,18 +3,18 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { CategoryRepository } from './category.repository';
 import { CreateCategory } from './dtos/create-category.dto';
 import { CategoryEntity } from './entities/category.entity';
+
 @Injectable()
 export class CategoryService {
   constructor(
-    @InjectRepository(CategoryEntity)
-    private readonly categoryRepository: Repository<CategoryEntity>,
+    private readonly categoryRepository: CategoryRepository,
   ) {}
+
   async findAllCategories(): Promise<CategoryEntity[]> {
-    const categories = await this.categoryRepository.find();
+    const categories = await this.categoryRepository.findAll();
     if (!categories || categories.length === 0) {
       throw new NotFoundException('Categories empty');
     }
@@ -22,11 +22,7 @@ export class CategoryService {
   }
 
   async findCategoryById(categoryId: number): Promise<CategoryEntity> {
-    const category = await this.categoryRepository.findOne({
-      where: {
-        id: categoryId,
-      },
-    });
+    const category = await this.categoryRepository.findOneById(categoryId);
 
     if (!category) {
       throw new NotFoundException(`Category id: ${categoryId} not found`);
@@ -36,16 +32,13 @@ export class CategoryService {
   }
 
   async findCategoryByName(name: string): Promise<CategoryEntity> {
-    const category = await this.categoryRepository.findOne({
-      where: {
-        name,
-      },
-    });
+    const category = await this.categoryRepository.findOneByName(name);
     if (!category) {
       throw new NotFoundException(`Category name ${name} not found`);
     }
     return category;
   }
+
   async createCategory(
     createCategory: CreateCategory,
   ): Promise<CategoryEntity> {
@@ -57,6 +50,6 @@ export class CategoryService {
         `Category name ${createCategory.name} exist`,
       );
     }
-    return this.categoryRepository.save(createCategory);
+    return this.categoryRepository.save(createCategory as CategoryEntity);
   }
 }
