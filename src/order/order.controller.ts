@@ -11,7 +11,9 @@ import {
   import { OrderService } from './order.service';
 import { UserId } from '../decorators/user-id.decorator';
 import { OrderEntity } from './entities/order.entity';
+import { ApiBearerAuth } from '@nestjs/swagger';
   
+  @ApiBearerAuth()  
   @Controller('order')
   export class OrderController {
     constructor(private readonly orderService: OrderService) {}

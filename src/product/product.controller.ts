@@ -17,7 +17,9 @@ import { ReturnProduct } from './dtos/return-product.dto';
 import { ProductEntity } from './entities/product.entity';
 import { ProductService } from './product.service';
 import { UpdateProductDTO } from './dtos/update-product.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Roles(UserType.Admin, UserType.User)
 @Controller('product')
 export class ProductController {

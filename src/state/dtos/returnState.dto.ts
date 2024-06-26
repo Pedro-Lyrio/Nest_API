@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { StateEntity } from "../entities/state.entity";
 
 export class returnStateDto {

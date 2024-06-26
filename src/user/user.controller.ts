@@ -16,14 +16,16 @@ import { UpdatePasswordDTO } from './dtos/update-password.dto';
 import { UserEntity } from './entities/user.entity';
 import { UserType } from './enum/user-type.enum';
 import { UserService } from './user.service';
+import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 
-
+@ApiBearerAuth()
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService){}
 
     @UsePipes(ValidationPipe)
     @Post()
+    @ApiBody({type : CreateUserDto})
         async createUser(@Body()createUser: CreateUserDto):Promise<UserEntity>{
             return this.userService.createUser(createUser)
         }
