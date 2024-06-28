@@ -5,6 +5,7 @@ import {
     Param,
     Patch,
     Post,
+    UseGuards,
     UsePipes,
     ValidationPipe,
   } from '@nestjs/common';
@@ -32,6 +33,7 @@ export class UserController {
 
         @Roles(UserType.Admin)
         @Get()
+        @UseGuards()
         async getAllUsers(): Promise<ReturnUserDto[]> {
             return (await this.userService.getAllUser()).map(
                 (UserEntity) => new ReturnUserDto(UserEntity),
@@ -40,6 +42,7 @@ export class UserController {
 
         @Roles(UserType.Admin)
         @Get('/:userId')
+        @UseGuards()
         async getUserById(@Param('userId') userId: number): Promise<ReturnUserDto>{
             return new ReturnUserDto(
             await this.userService.getUserByIdUsingRelations(userId),
